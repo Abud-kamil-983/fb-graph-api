@@ -1,0 +1,144 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+      <style type="text/css">
+      input.hidden {
+        position: absolute;
+        left: -9999px;
+      }
+
+      #profile-image1 {
+        cursor: pointer;
+
+        width: 100px;
+        height: 100px;
+        border:2px solid #03b1ce ;}
+        .tital{ font-size:16px; font-weight:500;}
+        .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0} 
+
+      </style>
+      <title></title>
+    </head>
+    <body>
+      <div class="container">
+        <div class="row">       
+
+          <div class="col-md-12 ">
+
+            <div class="panel panel-default">
+              <div class="panel-heading"> 
+                <div style="display: none;" class="alert alert-danger fade in">
+                  <a href="#" class="close" data-dismiss="alert">&times;</a>
+                  <strong>Error!</strong>
+                </div>
+                <h4 >User Profile</h4> <button id="showmydata" class="btn-md btn-danger">Show My Details</button></div>
+                <div class="panel-body">
+
+                  <div class="box box-info">
+
+                    <div class="box-body">
+                      <div class="col-sm-6">
+                       <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" class="img-circle img-responsive"> 
+                     </div>
+                     <div class="col-sm-6">
+                      <h2 id="fullname" style="color:#00b1b1;text-align: center;">  </h2></span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr style="margin:5px 0 5px 0;">
+
+
+                    <div class="col-sm-5 col-xs-6 tital " >First Name:</div>
+                    <div class="col-sm-7 col-xs-6 "><p id="firstname"></p></div>
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+
+                    <div class="col-sm-5 col-xs-6 tital " >Last Name:</div>
+                    <div class="col-sm-7"> <p id="lastname"></p></div>
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+
+                    <div class="col-sm-5 col-xs-6 tital " >Email:</div>
+                    <div class="col-sm-7"> <p id="email"></p></div>
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+
+                    <div class="col-sm-5 col-xs-6 tital " >Gender:</div>
+                    <div class="col-sm-7"> <p id="gender"></p></div>
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+
+                    <div class="col-sm-5 col-xs-6 tital " >Address:</div>
+                    <div class="col-sm-7"><p id="address"></p></div>
+
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+
+                    <div class="col-sm-5 col-xs-6 tital " >Date Of Birth:</div>
+                    <div class="col-sm-7"><p id="birthday"></p></div>
+
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+
+                    <div class="col-sm-5 col-xs-6 tital " >School:</div>
+                    <div class="col-sm-7"><p id="education"></p></div>
+
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+                    <div class="col-sm-5 col-xs-6 tital " >College:</div>
+                    <div class="col-sm-7"><p id="college"></p></div>
+
+                    <div class="clearfix"></div>
+                    <div class="bot-border"></div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+
+                </div>
+
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>  
+      <script>
+        $(document).ready(function(){
+          //to to access api
+          var token = 'EAACEdEose0cBANXzzjuAU5BSoMKihEtDzuBgJdNC9TzETui67ztUZCsDAnPr13wZAro8OScMsBAmXGrZA6JZAtncpX8LpmzUCWGZC6hWZAFJzumZCSGGMy6sKGdEmf8otg0tOa3fxfJQzDaAcOjLZCy1intYL4SgiQ1TTZA2cZB41QaXOZCAnhIivk3wvwb8r90OFoVAL1JhE6THgZDZD';
+
+          $('#showmydata').on('click', function(){
+
+            $.ajax({
+              url:'https://graph.facebook.com/me?fields=id,name,about,education,email,address,birthday,picture,work,hometown,first_name,last_name,gender&access_token='+token,
+              success:function(response){
+                console.log(response);
+                $('#fullname').text('Hi, I\'m '+response.name);
+                $('#profile-image1').attr('src', response.picture.data.url);
+                $('#firstname').text(response.first_name);
+
+                $('#lastname').text(response.last_name);
+
+                $('#email').text(response.email);
+
+                $('#birthday').text(response.birthday);
+                $('#gender').text(response.gender);
+
+                $('#address').text(response.hometown.name);
+                $('#education').text(response.education[0].school.name);
+                $('#college').text(response.education[1].school.name);
+
+              }, //success end here
+              error:function(request, status, error){
+                $('.alert-danger').show().text(request.responseJSON.error.message);
+              } // error ends here
+            }); //ajax call ends here
+          }); // click event end here
+        }); // ready ends here     
+      </script> 
+
+    </body>
+    </html>
