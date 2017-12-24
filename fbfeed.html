@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+	<style type="text/css">
+	.index-content a:hover{
+		color:black;
+		text-decoration:none;
+	}
+	.index-content{
+		margin-bottom:20px;
+		padding:50px 0px;
+
+	}
+	.index-content .row{
+		margin-top:20px;
+	}
+	.index-content a{
+		color: black;
+	}
+	.index-content .card{
+		background-color: #FFFFFF;
+		padding:0;
+		margin: 15px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius:4px;
+		box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+
+	}
+	.index-content .card:hover{
+		box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.3);
+		color:black;
+	}
+	.index-content .card img{
+		width:100%;
+		height: 60%;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+	.index-content .card h4{
+		margin:20px;
+	}
+	.index-content .card p{
+		margin:20px;
+		opacity: 0.65;
+	}
+	.index-content .blue-button{
+		width: 100px;
+		-webkit-transition: background-color 1s , color 1s; /* For Safari 3.1 to 6.0 */
+		transition: background-color 1s , color 1s;
+		min-height: 20px;
+		background-color: #002E5B;
+		color: #ffffff;
+		border-radius: 4px;
+		text-align: center;
+		font-weight: lighter;
+		margin: 0px 20px 15px 20px;
+		padding: 5px 0px;
+		display: inline-block;
+	}
+	.index-content .blue-button:hover{
+		background-color: #dadada;
+		color: #002E5B;
+	}
+	@media (max-width: 768px) {
+
+		.index-content .col-lg-4 {
+			margin-top: 20px;
+		}
+	}
+</style>
+<title></title>
+</head>
+<body>
+	<div class="index-content">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div style="display: none;" class="alert alert-danger fade in">
+						<a href="#" class="close" data-dismiss="alert">&times;</a>
+						<strong>Error!</strong> 
+					</div>
+				</div>
+			</div>
+			<div class="row">
+
+
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//token for accessing api
+			var token = 'EAACEdEose0cBANXzzjuAU5BSoMKihEtDzuBgJdNC9TzETui67ztUZCsDAnPr13wZAro8OScMsBAmXGrZA6JZAtncpX8LpmzUCWGZC6hWZAFJzumZCSGGMy6sKGdEmf8otg0tOa3fxfJQzDaAcOjLZCy1intYL4SgiQ1TTZA2cZB41QaXOZCAnhIivk3wvwb8r90OFoVAL1JhE6THgZDZD';
+
+			$.ajax({
+				url:'https://graph.facebook.com/me?fields=posts{picture,story,description,scheduled_publish_time,admin_creator,link,place}&access_token='+token,
+				success:function(response){  
+					//storin response array to a variable 
+					var dataArrray = response.posts.data;              
+					$.each(dataArrray, function(index, value){
+						// appending response to html tags
+						$('.row:nth-child(2)').append(`<div class="col-lg-4"><div class="card box"><img style="width:100%;" class="img-responsive" src="${value.picture != undefined ? value.picture:'http://via.placeholder.com/350x150'}"><h4>${value.story != undefined ? value.story:''}</h4><p>${value.description != undefined ? value.description.substring(0, 50)+'......':''}</p><a href="${value.link != undefined ? value.link:''}" class="blue-button">Read More</a></div></div>`)
+					});
+				}, //success ends here
+				error:function(request, status, error){
+					$('.alert-danger').show().text(request.responseJSON.error.message);
+				} //error ends here
+			}); // ajax call ends here
+		}); //ready function ends here     
+	</script>
+</body>
+</html>
